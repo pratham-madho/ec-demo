@@ -74,11 +74,20 @@
 <body>
 
     <!-- Simplified Header for this page -->
-    <header class="header">
+        <header class="header">
         <div class="header-logo">
-            <!-- This link takes the user back to your homepage -->
-            <a href="index.html">EC / BITS PILANI</a>
+        <a href="index.html">EC / BITS PILANI</a>
         </div>
+        <nav class="header-nav" id="main-nav">
+        <ul>
+                <!-- Note: "Announcements" is now the active link on this page -->
+                <li><a href="index.html">Home</a></li>
+                <li><a href="announcements.html" class="active">Announcements</a></li>
+                <li><a href="#">Documents</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    <div class="mobile-nav-toggle" id="mobile-nav-toggle">&#9776;</div>
     </header>
 
     <main class="main-content">
@@ -175,14 +184,21 @@
             if (event.target == modal) closeModal();
         });
     </script>
+    <script>
+    // --- ADD THIS PART FOR THE MOBILE MENU ---
+    const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+    const mainNav = document.getElementById('main-nav');
+    mobileNavToggle.addEventListener('click', () => mainNav.classList.toggle('active'));
+    document.querySelectorAll('.header-nav a').forEach(link => {
+        link.addEventListener('click', () => mainNav.classList.remove('active'));
+    });
+    // --- END OF MOBILE MENU PART ---
+
+    // This is your existing modal script (it should stay)
+    const modal = document.getElementById('announcement-modal');
+    // ... (the rest of your modal script) ...
+</script>
 
 </body>
 </html>
 ```
-
-### How to Use This
-
-1.  **Create the File:** Create a new file in your GitHub repository named `announcements.html`.
-2.  **Paste the Code:** Paste the code above into this new file.
-3.  **Update the List:** Over time, as you add new announcements, you will add their corresponding "card" to the top of the list in this `announcements.html` file.
-4.  **Link to this Page:** Finally, on your main `index.html` page, you can add a link in the header navigation that points to this new archive pa
