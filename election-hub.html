@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Election Hub | EC BITS Pilani</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles copied from index.html for consistency */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --primary-color: #004a99;
+            --secondary-color: #f0f0f0;
+            --border-color: #e0e0e0;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding-top: 80px;
+        }
+        .header {
+            position: fixed; top: 0; left: 0; width: 100%; display: flex;
+            justify-content: space-between; align-items: center; padding: 0 5%;
+            background-color: var(--bg-color); border-bottom: 1px solid var(--border-color);
+            z-index: 1000; height: 80px; box-sizing: border-box;
+        }
+        .header-logo a {
+            font-family: 'Roboto Mono', monospace; font-weight: 700; font-size: 1.2rem;
+            text-transform: uppercase; letter-spacing: 1px; text-decoration: none; color: var(--text-color);
+        }
+        .header-nav ul { list-style: none; display: flex; margin: 0; padding: 0; gap: 30px; }
+        .header-nav a {
+            font-family: 'Roboto Mono', monospace; text-decoration: none; color: var(--text-color);
+            font-size: 0.9rem; text-transform: uppercase; padding: 10px 0; transition: color 0.3s ease;
+        }
+        .header-nav a:hover, .header-nav a.active { color: var(--primary-color); }
+        .mobile-nav-toggle { display: none; font-size: 2rem; cursor: pointer; }
+        .footer { text-align: center; padding: 40px 20px; border-top: 1px solid var(--border-color); font-size: 0.9rem; color: #777; }
+
+        /* Page Specific Styles */
+        .main-content {
+            padding: 60px 5%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .page-title {
+            font-family: 'Roboto Mono', monospace; font-size: 2.5rem; font-weight: 700;
+            text-align: center; margin-bottom: 50px;
+        }
+
+        /* Accordion/Dropdown Styles */
+        .accordion details {
+            background: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            transition: background-color 0.2s ease;
+        }
+        .accordion details[open] {
+            background-color: white;
+        }
+        .accordion summary {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.3rem;
+            font-weight: 700;
+            padding: 20px;
+            cursor: pointer;
+            list-style: none; /* Remove default marker */
+            position: relative;
+        }
+        .accordion summary::after { /* Custom arrow */
+            content: '+';
+            position: absolute;
+            right: 20px;
+            font-size: 1.8rem;
+            transition: transform 0.3s ease;
+        }
+        .accordion details[open] summary::after {
+            content: '-';
+            transform: rotate(180deg);
+        }
+
+        /* Candidate Card Styles */
+        .candidate-container {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .candidate-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-align: center;
+            padding: 25px;
+        }
+        .candidate-card img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid var(--border-color);
+        }
+        .candidate-card h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.4rem;
+        }
+        .candidate-card .id-number {
+            font-family: 'Roboto Mono', monospace;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .candidate-links a {
+            display: block;
+            text-decoration: none;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            font-weight: 700;
+            transition: background-color 0.2s ease;
+        }
+        .sop-link {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .manifesto-link {
+            background-color: #333;
+            color: white;
+        }
+        .sop-link:hover { background-color: #003366; }
+        .manifesto-link:hover { background-color: #1a1a1a; }
+
+        /* Archives Button */
+        .archives-section {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-color);
+        }
+        .archives-button {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-family: 'Roboto Mono', monospace;
+            transition: background-color 0.3s ease;
+        }
+        .archives-button:hover {
+            background-color: #003366;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            body { padding-top: 60px; }
+            .header { height: 60px; padding: 0 20px; }
+            .header-nav { display: none; position: absolute; top: 60px; left: 0; width: 100%; background-color: white; border-bottom: 1px solid var(--border-color); }
+            .header-nav.active { display: block; }
+            .header-nav ul { flex-direction: column; align-items: center; padding: 20px 0; gap: 0; }
+            .header-nav li { width: 100%; text-align: center; }
+            .header-nav a { padding: 15px; display: block; width: 100%; }
+            .mobile-nav-toggle { display: block; }
+            .main-content { padding: 40px 20px; }
+            .page-title { font-size: 2rem; }
+            .accordion summary { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-logo">
+            <a href="index.html">EC / BITS PILANI</a>
+        </div>
+        <nav class="header-nav" id="main-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="announcements.html">Announcements</a></li>
+                <li><a href="election-hub.html" class="active">Elections</a></li>
+                <li><a href="index.html#documents">Documents</a></li>
+            </ul>
+        </nav>
+        <div class="mobile-nav-toggle" id="mobile-nav-toggle">&#9776;</div>
+    </header>
+
+    <main class="main-content">
+        <h1 class="page-title">Student Union Elections 2025-26</h1>
+
+        <div class="accordion">
+            <!-- President Dropdown -->
+            <details>
+                <summary>President</summary>
+                <div class="candidate-container">
+                    <!-- Candidate 1 -->
+                    <div class="candidate-card">
+                        <img src="https://placehold.co/120x120/EFEFEF/333?text=Photo" alt="Candidate Photo">
+                        <h3>Candidate Name A</h3>
+                        <p class="id-number">2022A7PS0001P</p>
+                        <div class="candidate-links">
+                            <a href="#" class="sop-link">Statement of Purpose</a>
+                            <a href="#" class="manifesto-link">Manifesto</a>
+                        </div>
+                    </div>
+                    <!-- Candidate 2 -->
+                    <div class="candidate-card">
+                        <img src="https://placehold.co/120x120/EFEFEF/333?text=Photo" alt="Candidate Photo">
+                        <h3>Candidate Name B</h3>
+                        <p class="id-number">2022AAPS0002P</p>
+                        <div class="candidate-links">
+                            <a href="#" class="sop-link">Statement of Purpose</a>
+                            <a href="#" class="manifesto-link">Manifesto</a>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- General Secretary Dropdown -->
+            <details>
+                <summary>General Secretary</summary>
+                <div class="candidate-container">
+                     <!-- Add candidate cards here -->
+                </div>
+            </details>
+
+            <!-- Hostel Reps in Alphabetical Order -->
+            <details><summary>Ashok Bhawan</summary><div class="candidate-container"></div></details>
+            <details><summary>Bhagirath Bhawan</summary><div class="candidate-container"></div></details>
+            <details><summary>Budh Bhawan</summary><div class="candidate-container"></div></details>
+            <details><summary>C.V. Raman Bhawan</summary><div class="candidate-container"></div></details>
+            <details><summary>Gandhi Bhawan</summary><div class="candidate-container"></div></details>
+            <details><summary>Krishna Bhawan</summary><div class="candidate-container"></div></details>
+            <details><summary>Meera Bhawan</summary><div class="candidate-container"></div></details>
+            <details><summary>Ram Bhawan</summary><div class="candidate-container"></div></details>
+            <details><summary>Rana Pratap Bhawan</summary><div class="candidate-container"></div></details>
+            <details><summary>Shankar Bhawan</summary><div class="candidate-container"></div></details>
+            <details><summary>Vishwakarma Bhawan</summary><div class="candidate-container"></div></details>
+            <details><summary>Vyas Bhawan</summary><div class="candidate-container"></div></details>
+
+            <!-- Day Scholar Rep Dropdown -->
+            <details>
+                <summary>Day Scholar Representative</summary>
+                <div class="candidate-container">
+                    <!-- Add candidate cards here -->
+                </div>
+            </details>
+        </div>
+
+        <div class="archives-section">
+            <a href="election-archives.html" class="archives-button">EC Archives</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Election Commission, BITS Pilani. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // --- Mobile Navigation Logic ---
+        const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+        const mainNav = document.getElementById('main-nav');
+        if (mobileNavToggle) {
+            mobileNavToggle.addEventListener('click', () => {
+                mainNav.classList.toggle('active');
+            });
+        }
+    </script>
+</body>
+</html>
