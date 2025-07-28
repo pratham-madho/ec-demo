@@ -1,10 +1,448 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Website Under Construction</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Election Commission | BITS Pilani</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles & Resets */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --primary-color: #004a99; /* BITS Blue */
+            --secondary-color: #f0f0f0;
+            --border-color: #e0e0e0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding-top: 80px; /* Space for the fixed header */
+        }
+
+        /* Header & Navigation */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            background-color: var(--bg-color);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            height: 80px;
+            box-sizing: border-box;
+        }
+
+        .header-logo {
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-logo a {
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .header-nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            gap: 30px;
+        }
+
+        .header-nav a {
+            font-family: 'Roboto Mono', monospace;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            padding: 10px 0;
+            transition: color 0.3s ease;
+        }
+
+        .header-nav a:hover, .header-nav a.active {
+            color: var(--primary-color);
+        }
+        
+        /* Mobile Navigation */
+        .mobile-nav-toggle {
+            display: none;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: calc(100vh - 80px); /* Full viewport height minus header */
+            padding: 0 20px;
+            background-color: var(--bg-color);
+        }
+
+        .hero-logo {
+            max-width: 120px;
+            margin-bottom: 30px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0 0 20px 0;
+            max-width: 800px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            color: #555;
+        }
+
+        .cta-button {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #003366;
+        }
+
+        /* Content Sections */
+        .content-section {
+            padding: 80px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        
+        /* Announcements Section */
+        #announcements {
+            background-color: var(--secondary-color);
+        }
+        
+        .announcements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .announcement-card {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .announcement-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .announcement-card .date {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.8rem;
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+        .announcement-card h3 {
+            font-size: 1.2rem;
+            margin: 0 0 15px 0;
+        }
+
+        .announcement-card p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .announcement-card a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        /* Documents Section */
+        .documents-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .document-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background-color: var(--secondary-color);
+            padding: 20px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease;
+            min-width: 300px;
+        }
+        
+        .document-link:hover {
+            background-color: #e0e0e0;
+        }
+
+        .document-link .icon {
+            font-size: 1.5rem;
+        }
+
+        /* Contact Section */
+        #contact {
+            background-color: var(--secondary-color);
+            text-align: center;
+        }
+        
+        #contact p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+        }
+
+        .contact-button {
+            font-family: 'Roboto Mono', monospace;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background-color: transparent;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-button:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: #777;
+        }
+        
+        .footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 60px;
+            }
+            .header {
+                height: 60px;
+                padding: 0 20px;
+            }
+            .header-nav {
+                display: none; /* Hide nav by default on mobile */
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .header-nav.active {
+                display: block; /* Show nav when active */
+            }
+            .header-nav ul {
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                gap: 0;
+            }
+            .header-nav li {
+                width: 100%;
+                text-align: center;
+            }
+            .header-nav a {
+                padding: 15px;
+                display: block;
+                width: 100%;
+            }
+            .mobile-nav-toggle {
+                display: block;
+            }
+            .hero {
+                height: calc(100vh - 60px);
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .content-section {
+                padding: 60px 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>Certified by the EC</h1>
-  <p>Website under work. Please check back soon!</p>
+
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-logo">
+            <a href="#">EC / BITS PILANI</a>
+        </div>
+        <nav class="header-nav" id="main-nav">
+            <ul>
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#announcements">Announcements</a></li>
+                <li><a href="#documents">Documents</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <!-- You can add an "Archives" link here later -->
+                <!-- <li><a href="/archives.html">Archives</a></li> -->
+            </ul>
+        </nav>
+        <div class="mobile-nav-toggle" id="mobile-nav-toggle">&#9776;</div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <!-- You can replace this placeholder with the actual BITS logo URL -->
+            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/d/d3/BITS_Pilani-Logo.svg/1200px-BITS_Pilani-Logo.svg.png" alt="BITS Pilani Logo" class="hero-logo" onerror="this.onerror=null; this.src='https://placehold.co/120x120/004a99/ffffff?text=BITS';">
+            <h1>Upholding Democracy, Ensuring Fairness.</h1>
+            <p>The official body for conducting free, fair, and transparent elections for the Students' Union of BITS Pilani, Pilani Campus.</p>
+            <a href="#announcements" class="cta-button">View Latest Announcements</a>
+        </section>
+
+        <!-- Announcements Section -->
+        <section id="announcements" class="content-section">
+            <h2 class="section-title">Announcements</h2>
+            <div class="announcements-grid">
+                <!-- Placeholder Announcement 1 -->
+                <div class="announcement-card">
+                    <div class="date">28 JUL 2025</div>
+                    <h3>SU Elections 2025-26: Schedule Released</h3>
+                    <p>The schedule for the upcoming Students' Union elections has been finalized. Nominations open next week.</p>
+                    <a href="#">Read More &rarr;</a>
+                </div>
+                <!-- Placeholder Announcement 2 -->
+                <div class="announcement-card">
+                    <div class="date">25 JUL 2025</div>
+                    <h3>Call for Nominations: Hostel Representatives</h3>
+                    <p>Nominations are now open for the posts of Hostel Representatives for the academic year 2025-26.</p>
+                    <a href="#">View Details &rarr;</a>
+                </div>
+                <!-- Placeholder Announcement 3 -->
+                <div class="announcement-card">
+                    <div class="date">20 JUL 2025</div>
+                    <h3>Ruling on Campaign Material Guidelines</h3>
+                    <p>The EC has issued a clarification on the guidelines for digital and physical campaign materials.</p>
+                    <a href="#">Access Document &rarr;</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Documents Section -->
+        <section id="documents" class="content-section">
+            <h2 class="section-title">Governing Documents</h2>
+            <div class="documents-list">
+                <a href="#" class="document-link">
+                    <span class="icon">&#128214;</span> <!-- Book Icon -->
+                    <span>SU Constitution</span>
+                </a>
+                <a href="#" class="document-link">
+                    <span class="icon">&#128210;</span> <!-- Clipboard Icon -->
+                    <span>Procedure Manual</span>
+                </a>
+                <a href="#" class="document-link">
+                    <span class="icon">&#127942;</span> <!-- Trophy Icon -->
+                    <span>Fest Charters (OASIS/APOGEE)</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Contact & Grievances Section -->
+        <section id="contact" class="content-section">
+            <h2 class="section-title">Contact & Grievances</h2>
+            <p>
+                For any inquiries, constitutional clarifications, or to report a violation, please reach out to the Election Commission. We are committed to upholding the spirit of the constitution.
+            </p>
+            <a href="mailto:ec@pilani.bits-pilani.ac.in" class="contact-button">File a Complaint / Report Violation</a>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Election Commission, BITS Pilani. All rights reserved.</p>
+        <p>This is an independent student body website. Visit the official <a href="https://www.bits-pilani.ac.in/pilani/" target="_blank">BITS Pilani website</a>.</p>
+    </footer>
+
+    <script>
+        // Simple script for mobile navigation toggle
+        const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+        const mainNav = document.getElementById('main-nav');
+
+        mobileNavToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+        });
+
+        // Close mobile nav when a link is clicked
+        const navLinks = document.querySelectorAll('.header-nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (mainNav.classList.contains('active')) {
+                    mainNav.classList.remove('active');
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>
