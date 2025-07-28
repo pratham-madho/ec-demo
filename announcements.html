@@ -95,6 +95,60 @@
             .main-content { padding: 40px 20px; }
             .page-title { font-size: 2rem; }
         }
+        /* --- Add this block to fix the pop-up styles --- */
+        .modal-body h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .modal-body .meta-info {
+            font-family: 'Roboto Mono', monospace;
+            color: #555;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+        .modal-body .content p, .modal-body .content li {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        .modal-body .content h2 {
+            font-size: 1.8rem;
+            margin-top: 40px;
+            margin-bottom: 15px;
+        }
+        .modal-body .content ul, .modal-body .content ol {
+            padding-left: 30px;
+        }
+        .modal-body .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            font-size: 1rem;
+        }
+        .modal-body .content th, .modal-body .content td {
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            text-align: left;
+        }
+        .modal-body .content th {
+            background-color: #f2f2f2;
+            font-weight: 700;
+        }
+        .modal-body .official-doc-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 700;
+            background-color: var(--primary-color);
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .modal-body .official-doc-link:hover {
+            background-color: #003366;
+        }
+        /* --- End of fix block --- */
     </style>
 </head>
 <body>
