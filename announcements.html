@@ -22,8 +22,9 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding-top: 80px;
+            padding-top: 80px; /* Space for the fixed header */
         }
+        /* --- Full Header --- */
         .header {
             position: fixed; top: 0; left: 0; width: 100%; display: flex;
             justify-content: space-between; align-items: center; padding: 0 5%;
@@ -34,6 +35,14 @@
             font-family: 'Roboto Mono', monospace; font-weight: 700; font-size: 1.2rem;
             text-transform: uppercase; letter-spacing: 1px; text-decoration: none; color: var(--text-color);
         }
+        .header-nav ul { list-style: none; display: flex; margin: 0; padding: 0; gap: 30px; }
+        .header-nav a {
+            font-family: 'Roboto Mono', monospace; text-decoration: none; color: var(--text-color);
+            font-size: 0.9rem; text-transform: uppercase; padding: 10px 0; transition: color 0.3s ease;
+        }
+        .header-nav a:hover, .header-nav a.active { color: var(--primary-color); }
+        .mobile-nav-toggle { display: none; font-size: 2rem; cursor: pointer; }
+
         /* Main content styles for this page */
         .main-content {
             padding: 60px 5%;
@@ -69,42 +78,55 @@
         .modal-content-wrapper { position: relative; margin: 5% auto; padding: 20px; width: 90%; max-width: 850px; }
         .modal-body { background-color: #fff; padding: 30px 40px; border-radius: 8px; max-height: 80vh; overflow-y: auto; }
         .close-button { color: #fff; position: absolute; top: -15px; right: 5px; font-size: 40px; font-weight: bold; cursor: pointer; }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            body { padding-top: 60px; }
+            .header { height: 60px; padding: 0 20px; }
+            .header-nav {
+                display: none; position: absolute; top: 60px; left: 0; width: 100%;
+                background-color: white; border-bottom: 1px solid var(--border-color);
+            }
+            .header-nav.active { display: block; }
+            .header-nav ul { flex-direction: column; align-items: center; padding: 20px 0; gap: 0; }
+            .header-nav li { width: 100%; text-align: center; }
+            .header-nav a { padding: 15px; display: block; width: 100%; }
+            .mobile-nav-toggle { display: block; }
+            .main-content { padding: 40px 20px; }
+            .page-title { font-size: 2rem; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Simplified Header for this page -->
-        <header class="header">
+    <!-- The new, full header with complete navigation -->
+    <header class="header">
         <div class="header-logo">
-        <a href="index.html">EC / BITS PILANI</a>
+            <a href="index.html">EC / BITS PILANI</a>
         </div>
         <nav class="header-nav" id="main-nav">
-        <ul>
-                <!-- Note: "Announcements" is now the active link on this page -->
+            <ul>
                 <li><a href="index.html">Home</a></li>
+                <!-- The "active" class highlights the current page -->
                 <li><a href="announcements.html" class="active">Announcements</a></li>
                 <li><a href="#">Documents</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
         </nav>
-    <div class="mobile-nav-toggle" id="mobile-nav-toggle">&#9776;</div>
+        <div class="mobile-nav-toggle" id="mobile-nav-toggle">&#9776;</div>
     </header>
 
     <main class="main-content">
         <h1 class="page-title">Announcements Archive</h1>
 
         <div class="announcements-grid">
-            <!-- You will add ALL your announcements here over time -->
             <!-- Newest announcements should be at the top -->
             <div class="announcement-card">
-            <div class="date">28 JUL 2025</div>
-            <h3>Revised Voting Eligibility for First-Year Students</h3>
-            <p>The EC has issued a notice regarding the voting rights of Integrated First Degree students admitted in 2025 for the upcoming SU elections.</p>
-            <a href="announcement-voting-eligibility.html" class="read-more-link">Read More &rarr;</a>
-        </div>
-            <!-- === End of Card === -->
-
-
+                <div class="date">28 JUL 2025</div>
+                <h3>Revised Voting Eligibility for First-Year Students</h3>
+                <p>The EC has issued a notice regarding the voting rights of Integrated First Degree students admitted in 2025 for the upcoming SU elections.</p>
+                <a href="announcement-voting-eligibility.html" class="read-more-link">Read More &rarr;</a>
+            </div>
             <div class="announcement-card">
                 <div class="date">28 JUL 2025</div>
                 <h3>SU Elections 2025-26: Schedule Released</h3>
@@ -123,16 +145,6 @@
                 <p>The EC has issued a clarification on the guidelines for digital and physical campaign materials.</p>
                 <a href="announcement-guidelines.html" class="read-more-link">Read More &rarr;</a>
             </div>
-            
-            <!-- Add older announcements below as you create them -->
-            <!--
-            <div class="announcement-card">
-                <div class="date">15 JUL 2025</div>
-                <h3>Older Announcement Title</h3>
-                <p>Summary of an older announcement goes here.</p>
-                <a href="older-announcement.html" class="read-more-link">Read More &rarr;</a>
-            </div>
-            -->
         </div>
     </main>
 
@@ -140,7 +152,7 @@
         <p>&copy; 2025 Election Commission, BITS Pilani. All rights reserved.</p>
     </footer>
 
-    <!-- Announcement Modal HTML (same as on homepage) -->
+    <!-- Announcement Modal HTML -->
     <div id="announcement-modal" class="modal">
         <div class="modal-content-wrapper">
             <span class="close-button">&times;</span>
@@ -148,8 +160,18 @@
         </div>
     </div>
 
-    <!-- Modal JavaScript (same as on homepage) -->
+    <!-- The complete, combined JavaScript for this page -->
     <script>
+        // --- Mobile Navigation Logic ---
+        const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+        const mainNav = document.getElementById('main-nav');
+        if (mobileNavToggle) {
+            mobileNavToggle.addEventListener('click', () => {
+                mainNav.classList.toggle('active');
+            });
+        }
+
+        // --- Modal Logic ---
         const modal = document.getElementById('announcement-modal');
         const modalBody = document.getElementById('modal-body-content');
         const closeButton = document.querySelector('.close-button');
@@ -179,26 +201,13 @@
                     });
             });
         });
-        closeButton.addEventListener('click', closeModal);
+        if(closeButton) {
+            closeButton.addEventListener('click', closeModal);
+        }
         window.addEventListener('click', (event) => {
             if (event.target == modal) closeModal();
         });
     </script>
-    <script>
-    // --- ADD THIS PART FOR THE MOBILE MENU ---
-    const mobileNavToggle = document.getElementById('mobile-nav-toggle');
-    const mainNav = document.getElementById('main-nav');
-    mobileNavToggle.addEventListener('click', () => mainNav.classList.toggle('active'));
-    document.querySelectorAll('.header-nav a').forEach(link => {
-        link.addEventListener('click', () => mainNav.classList.remove('active'));
-    });
-    // --- END OF MOBILE MENU PART ---
-
-    // This is your existing modal script (it should stay)
-    const modal = document.getElementById('announcement-modal');
-    // ... (the rest of your modal script) ...
-</script>
 
 </body>
 </html>
-```
