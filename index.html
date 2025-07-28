@@ -370,32 +370,15 @@
         </section>
 
         <!-- Announcements Section -->
-        <section id="announcements" class="content-section">
-            <h2 class="section-title">Announcements</h2>
-            <div class="announcements-grid">
-                <!-- Placeholder Announcement 1 -->
-                <div class="announcement-card">
-                    <div class="date">28 JUL 2025</div>
-                    <h3>SU Elections 2025-26: Schedule Released</h3>
-                    <p>The schedule for the upcoming Students' Union elections has been finalized. Nominations open next week.</p>
-                    <a href="#">Read More &rarr;</a>
-                </div>
-                <!-- Placeholder Announcement 2 -->
-                <div class="announcement-card">
-                    <div class="date">25 JUL 2025</div>
-                    <h3>Call for Nominations: Hostel Representatives</h3>
-                    <p>Nominations are now open for the posts of Hostel Representatives for the academic year 2025-26.</p>
-                    <a href="#">View Details &rarr;</a>
-                </div>
-                <!-- Placeholder Announcement 3 -->
-                <div class="announcement-card">
-                    <div class="date">20 JUL 2025</div>
-                    <h3>Ruling on Campaign Material Guidelines</h3>
-                    <p>The EC has issued a clarification on the guidelines for digital and physical campaign materials.</p>
-                    <a href="#">Access Document &rarr;</a>
-                </div>
-            </div>
-        </section>
+<!-- This is the NEW section for index.html -->
+<section id="announcements" class="content-section">
+    <h2 class="section-title">Latest Announcements</h2>
+    <!-- This container will be filled automatically by the script -->
+    <div class="announcements-grid" id="latest-announcements-grid">
+        <!-- You can leave a loading message here -->
+        <p>Loading latest announcements...</p>
+    </div>
+</section>
 
         <!-- Documents Section -->
         <section id="documents" class="content-section">
@@ -451,6 +434,86 @@
             });
         });
     </script>
+    <!-- Replace your old <script> with this entire new one -->
+<script>
+    // --- Mobile Navigation Logic (Unchanged) ---
+    const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+    const mainNav = document.getElementById('main-nav');
+    if (mobileNavToggle) {
+        mobileNavToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+        });
+    }
+
+    // --- Modal Logic (Now includes a reusable function) ---
+    const modal = document.getElementById('announcement-modal');
+    const modalBody = document.getElementById('modal-body-content');
+    const closeButton = document.querySelector('.close-button');
+
+    function openModal() { modal.style.display = 'block'; }
+    function closeModal() { modal.style.display = 'none'; modalBody.innerHTML = ''; }
+
+    // This function can now be called from anywhere to make links open the modal
+    function attachModalListeners(container) {
+        container.querySelectorAll('.read-more-link').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const url = this.getAttribute('href');
+                fetch(url)
+                    .then(response => response.ok ? response.text() : Promise.reject('File not found'))
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const content = doc.querySelector('.container');
+                        if (content) {
+                            modalBody.innerHTML = content.innerHTML;
+                            openModal();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        modalBody.innerHTML = `<p>Error loading content. <a href="${url}" target="_blank">Open directly</a>.</p>`;
+                        openModal();
+                    });
+            });
+        });
+    }
+
+    if(closeButton) {
+        closeButton.addEventListener('click', closeModal);
+    }
+    window.addEventListener('click', (event) => {
+        if (event.target == modal) closeModal();
+    });
+
+    // --- NEW: Automatic Announcement Fetching Logic ---
+    document.addEventListener('DOMContentLoaded', function() {
+        const latestAnnouncementsContainer = document.getElementById('latest-announcements-grid');
+        if (latestAnnouncementsContainer) {
+            fetch('announcements.html')
+                .then(response => response.ok ? response.text() : Promise.reject('Could not fetch announcements.html'))
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const allCards = doc.querySelectorAll('.announcement-card');
+                    
+                    latestAnnouncementsContainer.innerHTML = ''; // Clear loading message
+                    const latestThree = Array.from(allCards).slice(0, 3);
+                    
+                    latestThree.forEach(card => {
+                        latestAnnouncementsContainer.appendChild(card);
+                    });
+
+                    // Use the reusable function to make the new cards work
+                    attachModalListeners(latestAnnouncementsContainer);
+                })
+                .catch(error => {
+                    console.error('Error fetching latest announcements:', error);
+                    latestAnnouncementsContainer.innerHTML = '<p>Could not load announcements. Please visit the full <a href="announcements.html">announcements page</a>.</p>';
+                });
+        }
+    });
+</script>
 
 </body>
 </html>
