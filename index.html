@@ -256,6 +256,7 @@
             font-weight: 700;
             text-transform: uppercase;
             transition: all 0.3s ease;
+            display: inline-block; /* Ensures proper block behavior */
         }
         
         .contact-button:hover {
@@ -328,6 +329,13 @@
             .content-section {
                 padding: 60px 20px;
             }
+            
+            /* --- FIX STARTS HERE --- */
+            .contact-button {
+                padding: 15px 20px; /* Reduced horizontal padding */
+                font-size: 0.85rem; /* Slightly smaller font */
+            }
+            /* --- FIX ENDS HERE --- */
         }
     </style>
 </head>
@@ -446,3 +454,4 @@
 
 </body>
 </html>
+
